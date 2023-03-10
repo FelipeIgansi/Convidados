@@ -14,8 +14,12 @@ class AllGuestsViewModel(application: Application) : AndroidViewModel(applicatio
     val guests: LiveData<List<GuestModel>> = listAllGuests
     private val repository = GuestRepository.getInstance(application.applicationContext)
 
-    fun getPresece() {
+    fun getAll() {
         listAllGuests.value = repository.getGuests(DataBaseConstants.GUEST.COLUMNS.PRESENCE)
+    }
+
+    fun delete(id:Int) {
+        repository.delete(id)
     }
 
 }
