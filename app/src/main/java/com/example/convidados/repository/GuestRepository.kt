@@ -44,8 +44,8 @@ class GuestRepository private constructor(context: Context) {
             val values = ContentValues()
             values.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.name)
             values.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, presence)
-
-            db.insert("Guest", null, values)
+            if (values["name"] != "")
+                db.insert("Guest", null, values)
             true
         } catch (e: Exception) {
             false
@@ -76,6 +76,7 @@ class GuestRepository private constructor(context: Context) {
             val args = arrayOf(id.toString())
 
             db.delete(DataBaseConstants.GUEST.TABLE_NAME, selection, args)
+            db.rawQuery("drop table Guest", null)
             true
         } catch (e: Exception) {
             false
@@ -98,11 +99,9 @@ class GuestRepository private constructor(context: Context) {
             if (cursor != null && cursor.count > 0) {
                 while (cursor.moveToNext()) {
                     val id = cursor.getInt(cursor.getColumnIndex(column["id"]))
-                    val name =
-                        cursor.getString(cursor.getColumnIndex(column["name"]))
-                    val presence =
-                        cursor.getInt(cursor.getColumnIndex(column["presence"]))
-                    list.add(GuestModel(id, name, presence ==1))
+                    val name = cursor.getString(cursor.getColumnIndex(column["name"]))
+                    val presence = cursor.getInt(cursor.getColumnIndex(column["presence"]))
+                    list.add(GuestModel(id, name, presence.toString() == valueOfPresence))
                 }
             }
             cursor.close()
