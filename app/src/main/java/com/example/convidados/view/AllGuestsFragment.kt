@@ -1,19 +1,15 @@
 package com.example.convidados.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.convidados.viewmodel.AllGuestsViewModel
 import com.example.convidados.databinding.FragmentAllGuestsBinding
 import com.example.convidados.view.adapter.GuestAdapter
+import com.example.convidados.viewmodel.AllGuestsViewModel
 
 class AllGuestsFragment : Fragment() {
 
@@ -23,6 +19,7 @@ class AllGuestsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var viewModel: AllGuestsViewModel
+    private val adapter = GuestAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, bundle: Bundle?): View {
         viewModel = ViewModelProvider(this)[AllGuestsViewModel::class.java]
@@ -32,7 +29,7 @@ class AllGuestsFragment : Fragment() {
         binding.recyclerAllGuests.layoutManager = LinearLayoutManager(context)
 
         // Adapter
-        binding.recyclerAllGuests.adapter = GuestAdapter()
+        binding.recyclerAllGuests.adapter = adapter
 
         viewModel.getPresece()
 
@@ -42,7 +39,7 @@ class AllGuestsFragment : Fragment() {
 
     private fun observe() {
         viewModel.guests.observe(viewLifecycleOwner) {
-            val a = ""
+            adapter.updateGuests(it)
             //Lista de convidados
         }
     }
