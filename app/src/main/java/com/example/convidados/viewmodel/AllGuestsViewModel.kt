@@ -1,13 +1,21 @@
 package com.example.convidados.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.convidados.constants.DataBaseConstants
+import com.example.convidados.model.GuestModel
+import com.example.convidados.repository.GuestRepository
 
-class AllGuestsViewModel : ViewModel() {
+class AllGuestsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is all_guests Fragment"
+    private val listAllGuests = MutableLiveData<List<GuestModel>>()
+    val guests: LiveData<List<GuestModel>> = listAllGuests
+    private val repository = GuestRepository.getInstance(application.applicationContext)
+
+    fun getPresece() {
+        listAllGuests.value = repository.getGuests(DataBaseConstants.GUEST.COLUMNS.PRESENCE)
     }
-    val text: LiveData<String> = _text
+
 }
