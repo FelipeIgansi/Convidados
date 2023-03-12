@@ -1,5 +1,6 @@
 package com.example.convidados.repository
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import com.example.convidados.constants.DataBaseConstants
@@ -44,8 +45,9 @@ class GuestRepository private constructor(context: Context) {
             val values = ContentValues()
             values.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.name)
             values.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, presence)
-            if (values["name"] != "")
+            if (values["name"] != "") {
                 db.insert("Guest", null, values)
+            }
             true
         } catch (e: Exception) {
             false
@@ -76,13 +78,13 @@ class GuestRepository private constructor(context: Context) {
             val args = arrayOf(id.toString())
 
             db.delete(DataBaseConstants.GUEST.TABLE_NAME, selection, args)
-            db.rawQuery("drop table Guest", null)
             true
         } catch (e: Exception) {
             false
         }
     }
 
+    @SuppressLint("Range")
     fun getGuests(valueOfPresence: String) : List<GuestModel>{
 
         val list = mutableListOf<GuestModel>()
