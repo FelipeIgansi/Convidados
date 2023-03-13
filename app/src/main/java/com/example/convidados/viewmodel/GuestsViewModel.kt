@@ -8,7 +8,7 @@ import com.example.convidados.constants.DataBaseConstants
 import com.example.convidados.model.GuestModel
 import com.example.convidados.repository.GuestRepository
 
-class AllGuestsViewModel(application: Application) : AndroidViewModel(application) {
+class GuestsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val listAllGuests = MutableLiveData<List<GuestModel>>()
     val guests: LiveData<List<GuestModel>> = listAllGuests
@@ -16,6 +16,12 @@ class AllGuestsViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun getAll() {
         listAllGuests.value = repository.getAll(DataBaseConstants.GUEST.COLUMNS.PRESENCE)
+    }
+    fun getAbsent() {
+        listAllGuests.value = repository.getAbsent()
+    }
+    fun getPresent() {
+        listAllGuests.value = repository.getPresent()
     }
 
     fun delete(id:Int) {

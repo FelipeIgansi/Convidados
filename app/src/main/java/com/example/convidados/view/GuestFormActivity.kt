@@ -3,7 +3,7 @@ package com.example.convidados.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.convidados.R
 import com.example.convidados.constants.DataBaseConstants
@@ -41,18 +41,22 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             val presence = binding.radioPresent.isChecked
 
             viewModel.save(GuestModel(guestId, name, presence))
-            //temporario
-            finish()
-
         }
     }
 
     private fun observe() {
-        viewModel.guest.observe(this, Observer{
+        viewModel.guest.observe(this) {
             binding.editName.setText(it.name)
-            if (it.presenca ) binding.radioPresent.isChecked = true
+            if (it.presenca) binding.radioPresent.isChecked = true
             else binding.radioAbsent.isChecked = true
-        })
+        }
+
+        viewModel.saveGuest.observe(this) {
+            if (it != "") {
+                Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
     }
 
     private fun loadData() {
