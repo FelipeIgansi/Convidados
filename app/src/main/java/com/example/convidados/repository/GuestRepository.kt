@@ -58,16 +58,15 @@ class GuestRepository private constructor(context: Context) {
         val db = guestDataBase.writableDatabase
         val presence = if (guest.presenca) 1 else 0
 
-        val values = ContentValues()
+        val contentValues = ContentValues()
+        contentValues.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, presence)
+        contentValues.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.name)
 
-        values.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, presence)
-        values.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.name)
-
-        val selection = DataBaseConstants.GUEST.COLUMNS.ID + ""
+        val selection = DataBaseConstants.GUEST.COLUMNS.ID + "= ?"
 
         val args = arrayOf(guest.id.toString())
 
-        db.update(DataBaseConstants.GUEST.TABLE_NAME, values, selection, args)
+        db.update(DataBaseConstants.GUEST.TABLE_NAME, contentValues, selection, args)
 
     }
 
@@ -85,7 +84,7 @@ class GuestRepository private constructor(context: Context) {
     }
 
     @SuppressLint("Range")
-    fun getGuests(valueOfPresence: String) : List<GuestModel>{
+    fun getAll(valueOfPresence: String): List<GuestModel> {
 
         val list = mutableListOf<GuestModel>()
         try {
@@ -107,10 +106,52 @@ class GuestRepository private constructor(context: Context) {
                 }
             }
             cursor.close()
-        } catch (e: Exception ){
+        } catch (e: Exception) {
             return list
         }
         return list
+    }
+
+    @SuppressLint("Range")
+    fun get(id: Int): GuestModel? {
+
+        var guest: GuestModel? = null
+        return try {
+            val db = guestDataBase.readableDatabase
+
+            // Colunas que serão retornadas
+            val projection = arrayOf(
+                DataBaseConstants.GUEST.COLUMNS.NAME,
+                DataBaseConstants.GUEST.COLUMNS.PRESENCE
+            )
+
+            // Filtro
+            val selection = DataBaseConstants.GUEST.COLUMNS.ID + " = ?"
+            val args = arrayOf(id.toString())
+
+            val cursor = db.query(
+                DataBaseConstants.GUEST.TABLE_NAME,
+                projection,
+                selection,
+                args,
+                null, null, null
+            )
+
+            // Verifica se existem dados no cursor
+            if (cursor != null && cursor.count > 0) {
+                cursor.moveToFirst()
+
+                val name = cursor.getString(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.NAME))
+                val presence = (cursor.getInt(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.PRESENCE)) == 1)
+
+                guest = GuestModel(id, name, presence)
+            }
+
+            cursor?.close()
+            guest
+        } catch (e: Exception) {
+            guest
+        }
     }
 
 }
