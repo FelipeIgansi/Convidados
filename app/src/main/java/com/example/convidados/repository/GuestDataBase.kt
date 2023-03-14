@@ -14,6 +14,7 @@ class GuestDataBase(context: Context?) : SQLiteOpenHelper(context, NAME, null, V
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
+        // A entity já substitui esse script
         db?.execSQL("create table ${DataBaseConstants.GUEST.TABLE_NAME}" +
                 "( ${DataBaseConstants.GUEST.COLUMNS.ID} integer primary key autoincrement, " +
                 "${DataBaseConstants.GUEST.COLUMNS.NAME} text, " +
