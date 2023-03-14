@@ -24,12 +24,16 @@ class AllGuestsFragment : Fragment() {
     private lateinit var viewModel: GuestsViewModel
     private val adapter = GuestAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, bundle: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        bundle: Bundle?
+    ): View {
         viewModel = ViewModelProvider(this)[GuestsViewModel::class.java]
         _binding = FragmentAllGuestsBinding.inflate(inflater, container, false)
 
         // Layout RecyclerView
-        binding.recyclerGuests .layoutManager = LinearLayoutManager(context)
+        binding.recyclerGuests.layoutManager = LinearLayoutManager(context)
 
         // Adapter
         binding.recyclerGuests.adapter = adapter

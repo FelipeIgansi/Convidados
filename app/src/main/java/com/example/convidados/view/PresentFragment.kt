@@ -27,7 +27,7 @@ class PresentFragment : Fragment() {
         _binding = FragmentPresentBinding.inflate(inflater, container, false)
 
         // Layout RecyclerView
-        binding.recyclerGuests .layoutManager = LinearLayoutManager(context)
+        binding.recyclerGuests.layoutManager = LinearLayoutManager(context)
 
         // Adapter
         binding.recyclerGuests.adapter = adapter

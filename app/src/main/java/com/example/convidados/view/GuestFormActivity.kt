@@ -13,7 +13,7 @@ import com.example.convidados.viewmodel.GuestFormViewModel
 
 class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var binding : ActivityGuestFormBinding
+    private lateinit var binding: ActivityGuestFormBinding
     private lateinit var viewModel: GuestFormViewModel
     private var guestId = 0
 
@@ -21,10 +21,10 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
 
-        binding = ActivityGuestFormBinding.inflate(layoutInflater   )
+        binding = ActivityGuestFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[GuestFormViewModel:: class.java]
+        viewModel = ViewModelProvider(this)[GuestFormViewModel::class.java]
 
         binding.buttonSave.setOnClickListener(this)
 
@@ -36,11 +36,15 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        if (v.id == R.id.button_save){
+        if (v.id == R.id.button_save) {
             val name = binding.editName.text.toString()
-            val presence = binding.radioPresent.isChecked
+            val valPresence = binding.radioPresent.isChecked
 
-            viewModel.save(GuestModel(guestId, name, presence))
+            viewModel.save(GuestModel().apply {
+                this.id = guestId
+                this.name = name
+                this.presenca = valPresence
+            })
         }
     }
 
@@ -61,7 +65,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun loadData() {
         val bundle = intent.extras
-        if(bundle != null){
+        if (bundle != null) {
             guestId = bundle.getInt(DataBaseConstants.GUEST.ID)
             viewModel.get(guestId)
         }

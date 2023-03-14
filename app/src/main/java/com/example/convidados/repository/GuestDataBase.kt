@@ -1,20 +1,20 @@
 package com.example.convidados.repository
 
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.convidados.constants.DataBaseConstants
 import com.example.convidados.model.GuestModel
 
 
 // Função conecxão com o banco de dados
 @Database(entities = [GuestModel::class], version = 1)
-abstract class GuestDataBase() : RoomDatabase() {
+abstract class GuestDataBase : RoomDatabase() {
+
+    abstract fun guestDAO(): GuestDAO
+
     companion object {
         // Singletop será transferido para cá
 
@@ -32,7 +32,8 @@ abstract class GuestDataBase() : RoomDatabase() {
             }
             return INSTANCE
         }
-        private val MIGRATION_1_2: Migration = object : Migration(1,2){
+
+        private val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("DELETE FROM Guest")
             }

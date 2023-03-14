@@ -27,7 +27,7 @@ class AbsentFragment : Fragment() {
         _binding = FragmentAbsentBinding.inflate(inflater, container, false)
 
         // Layout RecyclerView
-        binding.recyclerGuests .layoutManager = LinearLayoutManager(context)
+        binding.recyclerGuests.layoutManager = LinearLayoutManager(context)
 
         // Adapter
         binding.recyclerGuests.adapter = adapter

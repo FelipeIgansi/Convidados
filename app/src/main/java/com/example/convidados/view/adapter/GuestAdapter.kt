@@ -13,13 +13,15 @@ class GuestAdapter : RecyclerView.Adapter<GuestViewHolder>() {
     private var guestList: List<GuestModel> = listOf()
     private lateinit var listner: OnGuestListner
 
-    override fun onCreateViewHolder(parent:ViewGroup, viewType:Int): GuestViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuestViewHolder {
         val item = RowGuestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GuestViewHolder(item, listner)
     }
-    override fun onBindViewHolder(holder: GuestViewHolder, position:Int){
+
+    override fun onBindViewHolder(holder: GuestViewHolder, position: Int) {
         holder.bind(guestList[position])
     }
+
     override fun getItemCount(): Int {
         return guestList.count()
     }
@@ -28,7 +30,8 @@ class GuestAdapter : RecyclerView.Adapter<GuestViewHolder>() {
         guestList = list
         notifyDataSetChanged()
     }
-    fun attachListner(guestListner: OnGuestListner){
+
+    fun attachListner(guestListner: OnGuestListner) {
         listner = guestListner
     }
 }
